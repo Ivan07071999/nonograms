@@ -11,9 +11,6 @@
   transition: all ease-in-out 0.7s;
 }
 
-/* * {
-  @apply transition-colors duration-300;
-} */
 
 body {
   background-color: var(--color-body);
@@ -21,32 +18,34 @@ body {
 }
 
 .container {
-  width: 610px;
-  height: 610px; 
+  width: 330px;
+  height: 330px; 
   margin: auto;
   border: 1px solid black;
   display: flex;
-  align-items: flex-start;
   flex-wrap: wrap;
+  align-items: flex-start;
+
   justify-content: space-around;
   border-radius: 10px;
 }
 
 .container__image_area {
-  width: 150px;
-  height: 150px;
+  width: 160px;
+  height: 160px;
   border: 1px solid blue;
   border-radius: 10px;
 }
 
 .container__top_tips {
-  /* border: 1px solid orangered; */
-  height: 150px;
-  width: 450px;
-  display: grid;
-  grid-template-columns: repeat(15, 30px);
-  grid-template-rows: repeat(5, 30px);
+  border: 1px solid orangered; 
+  height: 160px;
+  width: 160px;
   border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+
 }
 
 .container__grid_area_cell_left,
@@ -54,30 +53,35 @@ body {
   background-color: orangered;
   border: 1px solid var(--color-text);
   border-radius: 5px;
+  width: 30px;
+  height: 30px;
 }
 
 .container__left_tips {
-  /* border: 1px solid orangered; */
-  width: 150px;
-  height: 450px;
-  display: grid;
-  grid-template-columns: repeat(5, 30px);
-  grid-template-rows: repeat(15, 30px);
+  border: 1px solid orangered; 
+  height: 160px;
+  width: 160px;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
 }
 
 .container__grid_area {
-  width: 450px;
-  height: 450px;
-  display: grid;
-  grid-template-columns: repeat(15, 30px);
-  grid-template-rows: repeat(15, 30px);
+  border: 1px solid red;
+  width: 160px;
+  height: 160px;
   border-radius: 10px;
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
-
 
 .container__grid_area_cell {
   border: 1px solid var(--color-text);
   border-radius: 5px;
+  width: 30px;
+  height: 30px;
 }
 
 .status_container {
@@ -131,7 +135,6 @@ body {
 .night_mode {
   width: 70px;
   height: 70px;
-  border: 1px solid black;
   position: fixed;
   top: 120px;
   left: 500px;
@@ -142,6 +145,11 @@ body {
 .night_mode:hover {
   transform: translateY(-1px);
   transition: all ease-in-out .2s;
+}
+
+.light_mode {
+  background-image: url(assets/dark-mode.png);
+
 }
 
 .timer_container {

@@ -1,82 +1,135 @@
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-undef */
+/* eslint-disable import/named */
 import './style.css';
-//import createNightButton from './nightMode';
-//createNightButton();
-
+// import createNightButton from './nightMode';
+// createNightButton();
+// import {addClassList} from './assets/scripts/buttons';
 
 // eslint-disable-next-line no-undef
 const { body } = document;
 
+// Buttons
+
 const statusContainer = document.createElement('div');
-statusContainer.className = 'status_container';
-body.appendChild(statusContainer);
-
 const newGameButton = document.createElement('button');
-newGameButton.className = 'status_container__new_game_button';
-statusContainer.appendChild(newGameButton);
-newGameButton.textContent = 'New game';
-
 const solutionButton = document.createElement('button');
-solutionButton.className = 'status_container__solution_button';
-solutionButton.textContent = 'Solution';
-statusContainer.appendChild(solutionButton);
-
 const randomGameButton = document.createElement('button');
-randomGameButton.className = 'status_container__random_button';
-randomGameButton.textContent = 'Random game';
-statusContainer.appendChild(randomGameButton);
-
 const saveGameButton = document.createElement('button');
-saveGameButton.className = 'status_container__save_button';
-saveGameButton.textContent = 'Save game';
-statusContainer.appendChild(saveGameButton);
-
 const continueGameButton = document.createElement('button');
-continueGameButton.className = 'status_container__continue_button';
-continueGameButton.textContent = 'Continue previous game';
-statusContainer.appendChild(continueGameButton);
+
+function addClassList() {
+  statusContainer.className = 'status_container';
+  newGameButton.className = 'status_container__new_game_button';
+  solutionButton.className = 'status_container__solution_button';
+  randomGameButton.className = 'status_container__random_button';
+  saveGameButton.className = 'status_container__save_button';
+  continueGameButton.className = 'status_container__continue_button';
+}
+
+addClassList();
+
+function addTextButtons() {
+  newGameButton.textContent = 'New game';
+  solutionButton.textContent = 'Solution';
+  randomGameButton.textContent = 'Random game';
+  saveGameButton.textContent = 'Save game';
+  continueGameButton.textContent = 'Continue previous game';
+}
+
+addTextButtons();
+
+function appendButtons() {
+  body.appendChild(statusContainer);
+  statusContainer.appendChild(newGameButton);
+  statusContainer.appendChild(solutionButton);
+  statusContainer.appendChild(randomGameButton);
+  statusContainer.appendChild(saveGameButton);
+  statusContainer.appendChild(continueGameButton);
+}
+
+appendButtons();
 
 // Timer
 
 const timerContainer = document.createElement('div');
-timerContainer.className = 'timer_container';
-timerContainer.textContent = 'Timer';
-body.appendChild(timerContainer);
-
 const minutes = document.createElement('div');
-minutes.className = 'timer_container__minutes';
-minutes.textContent = '00:';
-timerContainer.appendChild(minutes);
-
 const seconds = document.createElement('div');
-seconds.className = 'timer_container__seconds';
-seconds.textContent = '00';
-timerContainer.appendChild(seconds);
 
+function appendTimerItems() {
+  body.appendChild(timerContainer);
+  timerContainer.appendChild(minutes);
+  timerContainer.appendChild(seconds);
+}
+
+function createTimerItemsContent() {
+  timerContainer.textContent = 'Timer';
+  minutes.textContent = '00:';
+  seconds.textContent = '00';
+}
+
+createTimerItemsContent();
+
+appendTimerItems();
+
+function addTimerClassList() {
+  timerContainer.className = 'timer_container';
+  minutes.className = 'timer_container__minutes';
+  seconds.className = 'timer_container__seconds';
+}
+
+addTimerClassList();
+
+let timerInterval;
+let timeSeconds = 0;
+
+// eslint-disable-next-line no-unused-vars
+function startTimer() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+  }
+
+  timerInterval = setInterval(() => {
+    timeSeconds += 1;
+    const timeMinutes = Math.floor(timeSeconds / 60);
+    const secs = timeSeconds % 60;
+
+    const formattedMinutes = `${String(timeMinutes).padStart(2, '0')}:`;
+    const formattedSeconds = `${String(secs).padStart(2, '0')}`;
+    minutes.textContent = formattedMinutes;
+    seconds.textContent = formattedSeconds;
+  }, 1000);
+}
+
+// startTimer();
 
 // grid area
 
-const container = document.createElement("div");
-container.className = "container";
-body.appendChild(container);
-
+const container = document.createElement('div');
 const imageArea = document.createElement('div');
-imageArea.className = 'container__image_area';
-container.appendChild(imageArea);
-
-
 const topTips = document.createElement('div');
-topTips.className = 'container__top_tips';
-container.appendChild(topTips);
-
 const leftTips = document.createElement('div');
-leftTips.className = 'container__left_tips';
-container.appendChild(leftTips);
-
-
 const gridArea = document.createElement('div');
-gridArea.className = 'container__grid_area';
-container.appendChild(gridArea);
 
+function appendGridAreaItems() {
+  body.appendChild(container);
+  container.appendChild(imageArea);
+  container.appendChild(topTips);
+  container.appendChild(leftTips);
+  container.appendChild(gridArea);
+}
+
+appendGridAreaItems();
+
+function addClassListGridAreaItems() {
+  container.className = 'container';
+  imageArea.className = 'container__image_area';
+  topTips.className = 'container__top_tips';
+  leftTips.className = 'container__left_tips';
+  gridArea.className = 'container__grid_area';
+}
+
+addClassListGridAreaItems();
 
 const levelOfDifficulty = {
   easy: 5 ** 2,
@@ -84,53 +137,234 @@ const levelOfDifficulty = {
   hard: 15 ** 2,
 };
 
-for (let i = 0; i < levelOfDifficulty.hard; i += 1) {
+for (let i = 0; i < levelOfDifficulty.easy; i += 1) {
   const cell = document.createElement('div');
   cell.className = 'container__grid_area_cell';
   gridArea.appendChild(cell);
 }
 
-for (let i = 0; i < 15 * 5; i += 1) {
+for (let i = 0; i < levelOfDifficulty.easy; i += 1) {
   const cell = document.createElement('div');
   cell.className = 'container__grid_area_cell_top';
   topTips.appendChild(cell);
 }
 
-for (let i = 0; i < 15 * 5; i += 1) {
+for (let i = 0; i < levelOfDifficulty.easy; i += 1) {
   const cell = document.createElement('div');
   cell.className = 'container__grid_area_cell_left';
   leftTips.appendChild(cell);
 }
 
-
 // night mode
 const nightButton = document.createElement('div');
-nightButton.className = 'night_mode';
+nightButton.className = 'night_mode light_mode';
 body.appendChild(nightButton);
-
 let styleMode = localStorage.getItem('styleMode');
 
 function enableDarkStyle() {
   body.classList.add('darkstyle');
   localStorage.setItem('styleMode', 'dark');
-  //nightButton.style.backgroundImage = 'url("assets/light-mode.png")';
+  nightButton.classList.add('light_mode');
 }
 
 function disableDarkStyle() {
   body.classList.remove('darkstyle');
   localStorage.setItem('styleMode', null);
-  //nightButton.style.backgroundImage = 'url("assets/dark-mode.png")';
+  nightButton.classList.remove('light_mode');
 }
 
 nightButton.addEventListener('click', () => {
   styleMode = localStorage.getItem('styleMode');
   if (styleMode !== 'dark') return enableDarkStyle();
-  disableDarkStyle();
+  return disableDarkStyle();
 });
 
+if (styleMode !== 'dark') {
+  nightButton.classList.remove('light_mode');
+}
 if (styleMode === 'dark') {
   enableDarkStyle();
 }
 
-// nightButton.style.backgroundImage = "url('assets/light-mode.png')";
-// nightButton.style.backgroundSize = 'contain';
+// Select levels
+
+const difficultyLevelsArray = ['Easy', 'Normal', 'Hard'];
+
+const select = document.createElement('select');
+select.className = 'game__select';
+body.appendChild(select);
+
+difficultyLevelsArray.forEach((optionText) => {
+  const optionElement = document.createElement('option');
+  optionElement.className = 'game__option_element';
+  optionElement.textContent = optionText;
+  optionElement.value = optionText.toLowerCase();
+
+  select.appendChild(optionElement);
+});
+
+// const firstArrayHard = [
+//   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//   0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0,
+//   0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0,
+//   1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1,
+//   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+//   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+//   0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+//   0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+//   0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+//   0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+//   0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+//   0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+//   0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+//   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+// ]; // heart
+
+// const secondArrayHard = [
+//   0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+//   0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+//   0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+//   0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+//   0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+//   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+//   0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+//   0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+//   0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+//   0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+//   0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+//   0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+//   0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+//   0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+//   0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+// ];
+
+// const gridSizeContainer = {
+//   easy: 150,
+//   normal: 300,
+//   hard: 450,
+// };
+
+const createLengthArray = {
+  easy: 5,
+  normal: 10,
+  hard: 15,
+};
+
+// console.log(select.value, 'selecl val');
+
+// if (select.value === 'easy') {
+//   renderingGridArea(playingAreaArr);
+//   renderTopCell(selectedDifficulty);
+//   renderLeftCell(selectedDifficulty);
+// }
+
+select.addEventListener('change', (event) => {
+  const selectedDifficulty = event.target.value;
+  // console.log(selectedDifficulty);
+  const playingAreaArr = Array(createLengthArray[selectedDifficulty] ** 2).fill(0);
+  clearGridArea(gridArea);
+  renderingGridArea(playingAreaArr);
+  renderTopCell(selectedDifficulty);
+  renderLeftCell(selectedDifficulty);
+});
+
+function renderLeftCell(selectedDifficulty) {
+  while (leftTips.firstChild) {
+    leftTips.removeChild(leftTips.firstChild);
+  }
+
+  let leftCellLen;
+
+  if (selectedDifficulty === 'easy') {
+    leftCellLen = createLengthArray.easy;
+    container.style.height = '330px';
+    leftTips.style.width = '160px';
+    leftTips.style.height = '160px';
+  }
+
+  if (selectedDifficulty === 'normal') {
+    leftCellLen = createLengthArray.normal;
+    container.style.height = '480px';
+    leftTips.style.width = '160px';
+    leftTips.style.height = '320px';
+  }
+
+  if (selectedDifficulty === 'hard') {
+    leftCellLen = createLengthArray.hard;
+    container.style.height = '650px';
+    leftTips.style.width = '160px';
+    leftTips.style.height = '482px';
+  }
+
+  for (let i = 0; i < leftCellLen * 5; i += 1) {
+    const cell = document.createElement('div');
+    cell.className = 'container__grid_area_cell_left';
+    leftTips.appendChild(cell);
+  }
+}
+
+function renderTopCell(selectedDifficulty) {
+  while (topTips.firstChild) {
+    topTips.removeChild(topTips.firstChild);
+  }
+
+  let topCellLen;
+
+  if (selectedDifficulty === 'easy') {
+    topCellLen = createLengthArray.easy;
+    container.style.width = '330px';
+    topTips.style.width = '160px';
+    topTips.style.height = '160px';
+  }
+
+  if (selectedDifficulty === 'normal') {
+    topCellLen = createLengthArray.normal;
+    container.style.width = '485px';
+    topTips.style.width = '320px';
+    topTips.style.height = '160px';
+  }
+
+  if (selectedDifficulty === 'hard') {
+    topCellLen = createLengthArray.hard;
+    container.style.width = '650px';
+    topTips.style.width = '482px';
+    topTips.style.height = '160px';
+  }
+  // console.log(topCellLen)
+  for (let i = 0; i < topCellLen * 5; i += 1) {
+    const cell = document.createElement('div');
+    cell.className = 'container__grid_area_cell_top';
+    topTips.appendChild(cell);
+  }
+}
+
+function renderingGridArea(playingAreaArr) {
+  for (let i = 0; i < playingAreaArr.length; i += 1) {
+    const cell = document.createElement('div');
+    cell.className = 'container__grid_area_cell';
+
+    if (playingAreaArr.length === 5 ** 2) {
+      gridArea.style.width = '160px';
+      gridArea.style.height = '160px';
+    }
+
+    if (playingAreaArr.length === 10 ** 2) {
+      gridArea.style.width = '320px';
+      gridArea.style.height = '320px';
+    }
+
+    if (playingAreaArr.length === 15 ** 2) {
+      gridArea.style.width = '480px';
+      gridArea.style.height = '480px';
+    }
+    gridArea.appendChild(cell);
+  }
+}
+
+// eslint-disable-next-line no-shadow
+function clearGridArea(gridArea) {
+  while (gridArea.firstChild) {
+    gridArea.removeChild(gridArea.firstChild);
+  }
+}
