@@ -1,6 +1,7 @@
 /* eslint-disable no-use-before-define */
+
 /* eslint-disable no-undef */
-/* eslint-disable import/named */
+
 import './style.css';
 // import createNightButton from './nightMode';
 // createNightButton();
@@ -258,15 +259,19 @@ const createLengthArray = {
 //   renderTopCell(selectedDifficulty);
 //   renderLeftCell(selectedDifficulty);
 // }
+let playingAreaArr = Array(createLengthArray.easy ** 2).fill(0);
+// console.log(playingAreaArr);
 
 select.addEventListener('change', (event) => {
   const selectedDifficulty = event.target.value;
   // console.log(selectedDifficulty);
-  const playingAreaArr = Array(createLengthArray[selectedDifficulty] ** 2).fill(0);
-  clearGridArea(gridArea);
-  renderingGridArea(playingAreaArr);
+  playingAreaArr = Array(createLengthArray[selectedDifficulty] ** 2).fill(0);
+  // console.log(playingAreaArr);
+  // clearGridArea(gridArea);
+  renderingGridArea(/* playingAreaArr */);
   renderTopCell(selectedDifficulty);
   renderLeftCell(selectedDifficulty);
+  // console.log(playingAreaArr);
 });
 
 function renderLeftCell(selectedDifficulty) {
@@ -339,32 +344,47 @@ function renderTopCell(selectedDifficulty) {
   }
 }
 
-function renderingGridArea(playingAreaArr) {
-  for (let i = 0; i < playingAreaArr.length; i += 1) {
-    const cell = document.createElement('div');
-    cell.className = 'container__grid_area_cell';
+const checkArray = [
+  1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+];
 
-    if (playingAreaArr.length === 5 ** 2) {
-      gridArea.style.width = '160px';
-      gridArea.style.height = '160px';
-    }
-
-    if (playingAreaArr.length === 10 ** 2) {
-      gridArea.style.width = '320px';
-      gridArea.style.height = '320px';
-    }
-
-    if (playingAreaArr.length === 15 ** 2) {
-      gridArea.style.width = '480px';
-      gridArea.style.height = '480px';
-    }
-    gridArea.appendChild(cell);
-  }
-}
-
-// eslint-disable-next-line no-shadow
-function clearGridArea(gridArea) {
+function renderingGridArea() {
   while (gridArea.firstChild) {
     gridArea.removeChild(gridArea.firstChild);
   }
+
+  const gridSizeMap = {
+    25: '160px',
+    100: '320px',
+    225: '480px',
+  };
+
+  const cellSize = gridSizeMap[playingAreaArr.length] || '0px';
+  gridArea.style.width = cellSize;
+  gridArea.style.height = cellSize;
+
+  playingAreaArr.forEach((_, i) => {
+    const cell = document.createElement('div');
+    cell.className = 'container__grid_area_cell';
+
+    cell.addEventListener('click', () => {
+      if (playingAreaArr[i] === 0) {
+        playingAreaArr[i] = 1;
+        cell.style.backgroundColor = 'black';
+        console.log(playingAreaArr);
+      } else {
+        playingAreaArr[i] = 0;
+        cell.style.backgroundColor = 'white';
+        console.log(playingAreaArr);
+      }
+      // console.log(checkArray.join(''), 'fin check');
+      //  console.log(playingAreaArr.join(''), "check");
+      if (playingAreaArr.join('') === checkArray.join('')) alert('Win');
+    });
+    gridArea.appendChild(cell);
+  });
 }
+
+renderingGridArea();
+// console.log(playingAreaArr);
+// console.log(playingAreaArr, 'hg');
