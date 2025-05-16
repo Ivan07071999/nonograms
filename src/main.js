@@ -1,8 +1,21 @@
 /* eslint-disable no-use-before-define */
 
 /* eslint-disable no-undef */
-
+// import {
+//   // addClassList,
+//   // addTextButtons,
+//   appendButtons,
+// } from './scripts/buttons';
+import {
+  easyTestArrays,
+  normalTestArrays,
+  hardTestArrays,
+} from './scripts/testArrays';
 import './style.css';
+
+normalTestArrays.join();
+// console.log(normalTestArrays);
+// console.log(testArraysEasy);
 // import createNightButton from './nightMode';
 // createNightButton();
 // import {addClassList} from './assets/scripts/buttons';
@@ -344,9 +357,9 @@ function renderTopCell(selectedDifficulty) {
   }
 }
 
-const checkArray = [
-  1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-];
+const countLevel = {
+  level: 0,
+};
 
 function renderingGridArea() {
   while (gridArea.firstChild) {
@@ -368,23 +381,93 @@ function renderingGridArea() {
     cell.className = 'container__grid_area_cell';
 
     cell.addEventListener('click', () => {
+      cell.classList.toggle('container__grid_area_cell_toggler');
       if (playingAreaArr[i] === 0) {
         playingAreaArr[i] = 1;
-        cell.style.backgroundColor = 'black';
+        // cell.style.backgroundColor = 'black';
         console.log(playingAreaArr);
       } else {
         playingAreaArr[i] = 0;
-        cell.style.backgroundColor = 'white';
+        // cell.style.backgroundColor = 'white';
         console.log(playingAreaArr);
       }
+      // console.log(select.value);
+
       // console.log(checkArray.join(''), 'fin check');
       //  console.log(playingAreaArr.join(''), "check");
-      if (playingAreaArr.join('') === checkArray.join('')) alert('Win');
+      switch (select.value) {
+        case 'easy':
+          if (
+            playingAreaArr.join('')
+            === easyTestArrays[countLevel.level].join('')
+          ) {
+            createNextLevelModal(cell);
+          }
+          break;
+        case 'normal':
+          if (
+            playingAreaArr.join('')
+            === normalTestArrays[countLevel.level].join('')
+          ) {
+            createNextLevelModal(cell);
+          }
+          break;
+        case 'hard':
+          if (
+            playingAreaArr.join('')
+            === hardTestArrays[countLevel.level].join('')
+          ) {
+            createNextLevelModal(cell);
+          }
+          break;
+        default:
+          console.log('err');
+      }
+      // console.log(select.value);
     });
     gridArea.appendChild(cell);
   });
 }
 
 renderingGridArea();
-// console.log(playingAreaArr);
-// console.log(playingAreaArr, 'hg');
+
+// function movingToTheNexLevel() {
+//   countLevel.level += 1;
+// }
+
+function createNextLevelModal() {
+  const modalContainer = document.createElement('div');
+  const modalButton = document.createElement('button');
+
+  modalContainer.className = 'modal';
+  modalButton.className = 'modal__button';
+
+  modalContainer.textContent = '"Great! You solved the nonogram!"';
+  modalButton.textContent = 'Continue';
+
+  body.appendChild(modalContainer);
+  modalContainer.appendChild(modalButton);
+  modalContainer.classList.add('modal__animation');
+
+  modalButton.addEventListener('click', () => {
+    modalContainer.classList.remove('modal__animation');
+    countLevel.level += 1;
+    // console.log(countLevel.level);
+    playingAreaArr.fill(0);
+    const classRemove = document.querySelectorAll('.container__grid_area_cell');
+    classRemove.forEach((item) => {
+      // console.log(item)
+      item.classList.remove('container__grid_area_cell_toggler');
+    });
+    // console.log(playingAreaArr, 'arr');
+  });
+}
+
+// createNextLevelModal();
+// console.log(Array.from(gridArea).forEach((i) => {
+//   console.log(i)
+// }))
+
+// const clasRemove = document.querySelectorAll(".container__grid_area_cell");
+// console.log(clas)
+// console.log(typeof select.value)
