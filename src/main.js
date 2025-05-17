@@ -36,7 +36,7 @@ function addClassList() {
 addClassList();
 
 function addTextButtons() {
-  newGameButton.textContent = 'New game';
+  newGameButton.textContent = 'Reset';
   solutionButton.textContent = 'Solution';
   randomGameButton.textContent = 'Random game';
   saveGameButton.textContent = 'Save game';
@@ -210,47 +210,6 @@ difficultyLevelsArray.forEach((optionText) => {
   select.appendChild(optionElement);
 });
 
-//   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//   0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0,
-//   0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0,
-//   1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1,
-//   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-//   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-//   0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
-//   0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
-//   0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0,
-//   0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-//   0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
-//   0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0,
-//   0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-//   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-// ]; // heart
-
-// const secondArrayHard = [
-//   0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
-//   0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-//   0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0,
-//   0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
-//   0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
-//   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-//   0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-//   0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-//   0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-//   0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-//   0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-//   0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-//   0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-//   0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-//   0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
-// ];
-
-// const gridSizeContainer = {
-//   easy: 150,
-//   normal: 300,
-//   hard: 450,
-// };
-
 const createLengthArray = {
   easy: 5,
   normal: 10,
@@ -259,87 +218,63 @@ const createLengthArray = {
 
 let playingAreaArr = Array(createLengthArray.easy ** 2).fill(0);
 
-select.addEventListener('change', (event) => {
-  const selectedDifficulty = event.target.value;
-  playingAreaArr = Array(createLengthArray[selectedDifficulty] ** 2).fill(0);
-  renderingGridArea(/* playingAreaArr */);
-  renderTopCell(selectedDifficulty);
-  renderLeftCell(selectedDifficulty);
-  selectLeftArrTips();
-});
-
-function renderLeftCell(selectedDifficulty) {
-  while (leftTips.firstChild) {
-    leftTips.removeChild(leftTips.firstChild);
-  }
-
-  let leftCellLen;
-
-  if (selectedDifficulty === 'easy') {
-    leftCellLen = createLengthArray.easy;
-    container.style.height = '330px';
-    leftTips.style.width = '160px';
-    leftTips.style.height = '160px';
-  }
-
-  if (selectedDifficulty === 'normal') {
-    leftCellLen = createLengthArray.normal;
-    container.style.height = '480px';
-    leftTips.style.width = '160px';
-    leftTips.style.height = '320px';
-  }
-
-  if (selectedDifficulty === 'hard') {
-    leftCellLen = createLengthArray.hard;
-    container.style.height = '650px';
-    leftTips.style.width = '160px';
-    leftTips.style.height = '482px';
-  }
-}
-
-function renderTopCell(selectedDifficulty) {
+function renderTipsCell(selectedDifficulty) {
   while (topTips.firstChild) {
     topTips.removeChild(topTips.firstChild);
   }
 
-  let topCellLen;
+  while (leftTips.firstChild) {
+    leftTips.removeChild(leftTips.firstChild);
+  }
 
   if (selectedDifficulty === 'easy') {
-    topCellLen = createLengthArray.easy;
-    container.style.width = '330px';
-    topTips.style.width = '160px';
-    topTips.style.height = '160px';
+    gridArea.classList.remove('container__grid_area_normal');
+    gridArea.classList.remove('container__grid_area_hard');
+    container.classList.remove('container__normal');
+    container.classList.remove('container__hard');
+    topTips.classList.remove('container__top_tips_normal');
+    topTips.classList.remove('container__top_tips_hard');
   }
 
   if (selectedDifficulty === 'normal') {
-    topCellLen = createLengthArray.normal;
-    container.style.width = '485px';
-    topTips.style.width = '320px';
-    topTips.style.height = '160px';
+    gridArea.classList.remove('container__grid_area_hard');
+    gridArea.classList.add('container__grid_area_normal');
+    container.classList.remove('container__hard');
+    container.classList.add('container__normal');
+    topTips.classList.remove('container__top_tips_hard');
+    topTips.classList.add('container__top_tips_normal');
   }
 
   if (selectedDifficulty === 'hard') {
-    topCellLen = createLengthArray.hard;
-    container.style.width = '650px';
-    topTips.style.width = '482px';
-    topTips.style.height = '160px';
+    gridArea.classList.add('container__grid_area_hard');
+    container.classList.add('container__hard');
+    topTips.classList.add('container__top_tips_hard');
   }
 }
+
+select.addEventListener('change', (event) => {
+  const selectedDifficulty = event.target.value;
+  playingAreaArr = Array(createLengthArray[selectedDifficulty] ** 2).fill(0);
+  renderingGridArea();
+  renderTipsCell(selectedDifficulty);
+  selectLeftArrTips();
+  // return selectedDifficulty;
+});
 
 function renderingGridArea() {
   while (gridArea.firstChild) {
     gridArea.removeChild(gridArea.firstChild);
   }
 
-  const gridSizeMap = {
-    25: '160px',
-    100: '320px',
-    225: '480px',
-  };
+  // const gridSizeMap = {
+  //   25: '160px',
+  //   100: '320px',
+  //   225: '480px',
+  // };
 
-  const cellSize = gridSizeMap[playingAreaArr.length] || '0px';
-  gridArea.style.width = cellSize;
-  gridArea.style.height = cellSize;
+  // const cellSize = gridSizeMap[playingAreaArr.length] || '0px';
+  // gridArea.style.width = cellSize;
+  // gridArea.style.height = cellSize;
 
   playingAreaArr.forEach((_, i) => {
     const cell = document.createElement('div');
@@ -350,7 +285,7 @@ function renderingGridArea() {
       cell.classList.toggle('container__grid_area_cell_toggler');
       if (playingAreaArr[i] === 0) {
         playingAreaArr[i] = 1;
-        // console.log(playingAreaArr);
+        console.log(playingAreaArr);
       } else {
         playingAreaArr[i] = 0;
         // console.log(playingAreaArr);
@@ -518,3 +453,60 @@ function selectLeftArrTips() {
 }
 
 selectLeftArrTips();
+
+// const cell = document.querySelectorAll('.container__grid_area_cell');
+
+function newGame() {
+  const cell = document.querySelectorAll('.container__grid_area_cell');
+  for (let i = 0; i < cell.length; i += 1) {
+    cell[i].classList.remove('container__grid_area_cell_toggler');
+  }
+  playingAreaArr.fill(0);
+  selectLeftArrTips();
+}
+
+function showSolution() {
+  const cell = document.querySelectorAll('.container__grid_area_cell');
+  switch (select.value) {
+    case 'easy':
+      for (let i = 0; i < easyTestArrays[countLevel.level].length; i += 1) {
+        if (easyTestArrays[countLevel.level][i] === 1) {
+          cell[i].classList.add('container__grid_area_cell_toggler');
+        }
+      }
+      createNextLevelModal(cell);
+      break;
+    case 'normal':
+      for (let i = 0; i < normalTestArrays[countLevel.level].length; i += 1) {
+        if (normalTestArrays[countLevel.level][i] === 1) {
+          cell[i].classList.add('container__grid_area_cell_toggler');
+        }
+      }
+      createNextLevelModal(cell);
+      break;
+    case 'hard':
+      for (let i = 0; i < hardTestArrays[countLevel.level].length; i += 1) {
+        if (hardTestArrays[countLevel.level][i] === 1) {
+          cell[i].classList.add('container__grid_area_cell_toggler');
+        }
+      }
+      createNextLevelModal(cell);
+      break;
+    default:
+  }
+}
+
+function createRandomGame() {
+  countLevel.level = Math.floor(Math.random() * (5 - 0) + 0);
+  const random = Math.floor(Math.random() * (difficultyLevelsArray.length - 0) + 0);
+  select.value = difficultyLevelsArray[random].toLowerCase();
+  playingAreaArr = Array(createLengthArray[select.value] ** 2).fill(0);
+
+  renderingGridArea();
+  renderTipsCell(select.value);
+  selectLeftArrTips();
+}
+
+solutionButton.addEventListener('click', showSolution);
+newGameButton.addEventListener('click', newGame);
+randomGameButton.addEventListener('click', createRandomGame);
