@@ -2,8 +2,6 @@
 
 /* eslint-disable no-undef */
 // import {
-//   // addClassList,
-//   // addTextButtons,
 //   appendButtons,
 // } from './scripts/buttons';
 import {
@@ -14,13 +12,7 @@ import {
 import './style.css';
 
 normalTestArrays.join();
-// console.log(normalTestArrays);
-// console.log(testArraysEasy);
-// import createNightButton from './nightMode';
-// createNightButton();
-// import {addClassList} from './assets/scripts/buttons';
 
-// eslint-disable-next-line no-undef
 const { body } = document;
 
 // Buttons
@@ -98,6 +90,11 @@ let timerInterval;
 let timeSeconds = 0;
 
 // eslint-disable-next-line no-unused-vars
+const countLevel = {
+  level: 0,
+  timerStatus: false,
+};
+
 function startTimer() {
   if (timerInterval) {
     clearInterval(timerInterval);
@@ -114,7 +111,15 @@ function startTimer() {
     seconds.textContent = formattedSeconds;
   }, 1000);
 }
+function checkTimerStatus() {
+  if (countLevel.timerStatus === false) {
+    // console.log('false');
+    return;
+  }
+  startTimer();
+}
 
+checkTimerStatus();
 // startTimer();
 
 // grid area
@@ -155,18 +160,6 @@ for (let i = 0; i < levelOfDifficulty.easy; i += 1) {
   const cell = document.createElement('div');
   cell.className = 'container__grid_area_cell';
   gridArea.appendChild(cell);
-}
-
-for (let i = 0; i < levelOfDifficulty.easy; i += 1) {
-  const cell = document.createElement('div');
-  cell.className = 'container__grid_area_cell_top';
-  topTips.appendChild(cell);
-}
-
-for (let i = 0; i < levelOfDifficulty.easy; i += 1) {
-  const cell = document.createElement('div');
-  cell.className = 'container__grid_area_cell_left';
-  leftTips.appendChild(cell);
 }
 
 // night mode
@@ -217,7 +210,6 @@ difficultyLevelsArray.forEach((optionText) => {
   select.appendChild(optionElement);
 });
 
-// const firstArrayHard = [
 //   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 //   0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0,
 //   0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0,
@@ -265,26 +257,15 @@ const createLengthArray = {
   hard: 15,
 };
 
-// console.log(select.value, 'selecl val');
-
-// if (select.value === 'easy') {
-//   renderingGridArea(playingAreaArr);
-//   renderTopCell(selectedDifficulty);
-//   renderLeftCell(selectedDifficulty);
-// }
 let playingAreaArr = Array(createLengthArray.easy ** 2).fill(0);
-// console.log(playingAreaArr);
 
 select.addEventListener('change', (event) => {
   const selectedDifficulty = event.target.value;
-  // console.log(selectedDifficulty);
   playingAreaArr = Array(createLengthArray[selectedDifficulty] ** 2).fill(0);
-  // console.log(playingAreaArr);
-  // clearGridArea(gridArea);
   renderingGridArea(/* playingAreaArr */);
   renderTopCell(selectedDifficulty);
   renderLeftCell(selectedDifficulty);
-  // console.log(playingAreaArr);
+  selectLeftArrTips();
 });
 
 function renderLeftCell(selectedDifficulty) {
@@ -313,12 +294,6 @@ function renderLeftCell(selectedDifficulty) {
     container.style.height = '650px';
     leftTips.style.width = '160px';
     leftTips.style.height = '482px';
-  }
-
-  for (let i = 0; i < leftCellLen * 5; i += 1) {
-    const cell = document.createElement('div');
-    cell.className = 'container__grid_area_cell_left';
-    leftTips.appendChild(cell);
   }
 }
 
@@ -349,17 +324,7 @@ function renderTopCell(selectedDifficulty) {
     topTips.style.width = '482px';
     topTips.style.height = '160px';
   }
-  // console.log(topCellLen)
-  for (let i = 0; i < topCellLen * 5; i += 1) {
-    const cell = document.createElement('div');
-    cell.className = 'container__grid_area_cell_top';
-    topTips.appendChild(cell);
-  }
 }
-
-const countLevel = {
-  level: 0,
-};
 
 function renderingGridArea() {
   while (gridArea.firstChild) {
@@ -381,20 +346,15 @@ function renderingGridArea() {
     cell.className = 'container__grid_area_cell';
 
     cell.addEventListener('click', () => {
+      checkTimerStatus();
       cell.classList.toggle('container__grid_area_cell_toggler');
       if (playingAreaArr[i] === 0) {
         playingAreaArr[i] = 1;
-        // cell.style.backgroundColor = 'black';
-        console.log(playingAreaArr);
+        // console.log(playingAreaArr);
       } else {
         playingAreaArr[i] = 0;
-        // cell.style.backgroundColor = 'white';
-        console.log(playingAreaArr);
+        // console.log(playingAreaArr);
       }
-      // console.log(select.value);
-
-      // console.log(checkArray.join(''), 'fin check');
-      //  console.log(playingAreaArr.join(''), "check");
       switch (select.value) {
         case 'easy':
           if (
@@ -421,19 +381,13 @@ function renderingGridArea() {
           }
           break;
         default:
-          console.log('err');
       }
-      // console.log(select.value);
     });
     gridArea.appendChild(cell);
   });
 }
 
 renderingGridArea();
-
-// function movingToTheNexLevel() {
-//   countLevel.level += 1;
-// }
 
 function createNextLevelModal() {
   const modalContainer = document.createElement('div');
@@ -460,14 +414,107 @@ function createNextLevelModal() {
       item.classList.remove('container__grid_area_cell_toggler');
     });
     // console.log(playingAreaArr, 'arr');
+    selectLeftArrTips();
   });
 }
 
-// createNextLevelModal();
-// console.log(Array.from(gridArea).forEach((i) => {
-//   console.log(i)
-// }))
+// левые подсказки
 
-// const clasRemove = document.querySelectorAll(".container__grid_area_cell");
-// console.log(clas)
-// console.log(typeof select.value)
+function createLeftTips(arr, size) {
+  const hintsRows = [];
+
+  for (let i = 0; i < size; i += 1) {
+    const rowHints = [];
+
+    let count = 0;
+
+    for (let j = 0; j < size; j += 1) {
+      const index = i * size + j;
+
+      if (arr[index] === 1) {
+        count += 1;
+      } else if (count > 0) {
+        rowHints.push(count);
+        count = 0;
+      }
+    }
+    if (count > 0) {
+      rowHints.push(count);
+    }
+
+    hintsRows.push(rowHints);
+  }
+
+  while (leftTips.firstChild) {
+    leftTips.removeChild(leftTips.firstChild);
+  }
+
+  for (let i = 0; i < hintsRows.length; i += 1) {
+    const cell = document.createElement('div');
+    cell.className = 'container__grid_area_cell_left';
+    leftTips.appendChild(cell);
+    for (let j = 0; j < hintsRows[i].length; j += 1) {
+      const miniCell = document.createElement('div');
+      cell.appendChild(miniCell);
+      miniCell.textContent = hintsRows[i][j];
+      miniCell.className = 'minicell';
+    }
+  }
+}
+
+function createTopTips(arr, size) {
+  const hintsCols = Array.from({ length: size }, () => []);
+
+  for (let j = 0; j < size; j += 1) {
+    let count = 0;
+
+    for (let i = 0; i < size; i += 1) {
+      const index = i * size + j;
+      if (arr[index] === 1) {
+        count += 1;
+      } else if (count > 0) {
+        hintsCols[j].push(count);
+        count = 0;
+      }
+    }
+    if (count > 0) {
+      hintsCols[j].push(count);
+    }
+  }
+
+  while (topTips.firstChild) {
+    topTips.removeChild(topTips.firstChild);
+  }
+
+  for (let i = 0; i < hintsCols.length; i += 1) {
+    const cell = document.createElement('div');
+    cell.className = 'container__grid_area_cell_top';
+    topTips.appendChild(cell);
+    for (let j = 0; j < hintsCols[i].length; j += 1) {
+      const miniCell = document.createElement('div');
+      cell.appendChild(miniCell);
+      miniCell.textContent = hintsCols[i][j];
+      miniCell.className = 'minicell';
+    }
+  }
+}
+
+function selectLeftArrTips() {
+  switch (select.value) {
+    case 'easy':
+      createLeftTips(easyTestArrays[countLevel.level], 5);
+      createTopTips(easyTestArrays[countLevel.level], 5);
+      break;
+    case 'normal':
+      createLeftTips(normalTestArrays[countLevel.level], 10);
+      createTopTips(normalTestArrays[countLevel.level], 10);
+      break;
+    case 'hard':
+      createLeftTips(hardTestArrays[countLevel.level], 15);
+      createTopTips(hardTestArrays[countLevel.level], 15);
+      break;
+    default:
+  }
+}
+
+selectLeftArrTips();
