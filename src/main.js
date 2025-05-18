@@ -266,26 +266,25 @@ function renderingGridArea() {
     gridArea.removeChild(gridArea.firstChild);
   }
 
-  // const gridSizeMap = {
-  //   25: '160px',
-  //   100: '320px',
-  //   225: '480px',
-  // };
-
-  // const cellSize = gridSizeMap[playingAreaArr.length] || '0px';
-  // gridArea.style.width = cellSize;
-  // gridArea.style.height = cellSize;
+  // console.log(playingAreaArr);
 
   playingAreaArr.forEach((_, i) => {
     const cell = document.createElement('div');
     cell.className = 'container__grid_area_cell';
+    if (playingAreaArr[i] === 0) {
+      // cell.classList.remove('container__grid_area_cell_toggler');
+      // console.log(playingAreaArr);
+    } else {
+      cell.classList.add('container__grid_area_cell_toggler');
+      // console.log(playingAreaArr);
+    }
 
     cell.addEventListener('click', () => {
       checkTimerStatus();
       cell.classList.toggle('container__grid_area_cell_toggler');
       if (playingAreaArr[i] === 0) {
         playingAreaArr[i] = 1;
-        console.log(playingAreaArr);
+        // console.log(playingAreaArr);
       } else {
         playingAreaArr[i] = 0;
         // console.log(playingAreaArr);
@@ -296,7 +295,8 @@ function renderingGridArea() {
             playingAreaArr.join('')
             === easyTestArrays[countLevel.level].join('')
           ) {
-            createNextLevelModal(cell);
+            // createNextLevelModal();
+            nextOrWin();
           }
           break;
         case 'normal':
@@ -304,7 +304,8 @@ function renderingGridArea() {
             playingAreaArr.join('')
             === normalTestArrays[countLevel.level].join('')
           ) {
-            createNextLevelModal(cell);
+            // createNextLevelModal(cell);
+            nextOrWin();
           }
           break;
         case 'hard':
@@ -312,7 +313,8 @@ function renderingGridArea() {
             playingAreaArr.join('')
             === hardTestArrays[countLevel.level].join('')
           ) {
-            createNextLevelModal(cell);
+            // createNextLevelModal(cell);
+            nextOrWin();
           }
           break;
         default:
@@ -454,7 +456,7 @@ function selectLeftArrTips() {
 
 selectLeftArrTips();
 
-// const cell = document.querySelectorAll('.container__grid_area_cell');
+// Buttons
 
 function newGame() {
   const cell = document.querySelectorAll('.container__grid_area_cell');
@@ -472,25 +474,31 @@ function showSolution() {
       for (let i = 0; i < easyTestArrays[countLevel.level].length; i += 1) {
         if (easyTestArrays[countLevel.level][i] === 1) {
           cell[i].classList.add('container__grid_area_cell_toggler');
+        } else {
+          cell[i].classList.remove('container__grid_area_cell_toggler');
         }
       }
-      createNextLevelModal(cell);
+      createNextLevelModal();
       break;
     case 'normal':
       for (let i = 0; i < normalTestArrays[countLevel.level].length; i += 1) {
         if (normalTestArrays[countLevel.level][i] === 1) {
           cell[i].classList.add('container__grid_area_cell_toggler');
+        } else {
+          cell[i].classList.remove('container__grid_area_cell_toggler');
         }
       }
-      createNextLevelModal(cell);
+      createNextLevelModal();
       break;
     case 'hard':
       for (let i = 0; i < hardTestArrays[countLevel.level].length; i += 1) {
         if (hardTestArrays[countLevel.level][i] === 1) {
           cell[i].classList.add('container__grid_area_cell_toggler');
+        } else {
+          cell[i].classList.remove('container__grid_area_cell_toggler');
         }
       }
-      createNextLevelModal(cell);
+      createNextLevelModal();
       break;
     default:
   }
@@ -507,6 +515,64 @@ function createRandomGame() {
   selectLeftArrTips();
 }
 
+function saveGame() {
+  const currentArrState = playingAreaArr.join('');
+  localStorage.setItem(
+    'Previous game',
+    JSON.stringify({
+      level: countLevel.level,
+      difficulty: select.value,
+      arr: currentArrState,
+    }),
+  );
+}
+
+function loadPreviousGame() {
+  const getSaveItems = JSON.parse(localStorage.getItem('Previous game'));
+  select.value = getSaveItems.difficulty;
+  countLevel.level = getSaveItems.level;
+  playingAreaArr = getSaveItems.arr.split('').map(Number);
+
+  renderingGridArea();
+  renderTipsCell(select.value);
+  selectLeftArrTips();
+}
+
 solutionButton.addEventListener('click', showSolution);
 newGameButton.addEventListener('click', newGame);
 randomGameButton.addEventListener('click', createRandomGame);
+saveGameButton.addEventListener('click', saveGame);
+continueGameButton.addEventListener('click', loadPreviousGame);
+
+// if (countLevel.level > 4) createWinModal();
+
+function createWinModal() {
+  const winModal = document.createElement('div');
+  const winButton = document.createElement('button');
+
+  winModal.className = 'modal';
+  winButton.className = 'modal__button';
+
+  winModal.textContent = 'You win! \n select another difficulty level';
+  winButton.textContent = 'Continue the game';
+
+  body.appendChild(winModal);
+  winModal.appendChild(winButton);
+
+  winModal.classList.add('modal__animation');
+
+  winButton.addEventListener('click', () => {
+    winModal.classList.remove('modal__animation');
+    countLevel.level = 0;
+  });
+}
+
+// createWinModal();
+function nextOrWin() {
+  // countLevel.level += 1;
+  if ((countLevel.level <= 4)) {
+    createNextLevelModal();
+  } else {
+    createWinModal();
+  }
+}
