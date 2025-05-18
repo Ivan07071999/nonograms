@@ -14,6 +14,7 @@ import './style.css';
 normalTestArrays.join();
 
 const { body } = document;
+let tableArr = [];
 
 // Buttons
 
@@ -99,7 +100,7 @@ function startTimer() {
   if (timerInterval) {
     clearInterval(timerInterval);
   }
-
+  timeSeconds = 0;
   timerInterval = setInterval(() => {
     timeSeconds += 1;
     const timeMinutes = Math.floor(timeSeconds / 60);
@@ -112,14 +113,25 @@ function startTimer() {
   }, 1000);
 }
 function checkTimerStatus() {
-  if (countLevel.timerStatus === false) {
-    // console.log('false');
-    return;
-  }
+  if (countLevel.timerStatus === true) return;
+  // console.log('false');
   startTimer();
+  countLevel.timerStatus = true;
+}
+function stopTimer() {
+  clearInterval(timerInterval);
+  timerInterval = null;
 }
 
-checkTimerStatus();
+function removeTimerContent() {
+  const min = document.querySelector('.timer_container__minutes');
+  const sec = document.querySelector('.timer_container__seconds');
+
+  min.textContent = '00:';
+  sec.textContent = '00';
+}
+
+// checkTimerStatus();
 // startTimer();
 
 // grid area
@@ -280,7 +292,6 @@ function renderingGridArea() {
     }
 
     cell.addEventListener('click', () => {
-      checkTimerStatus();
       cell.classList.toggle('container__grid_area_cell_toggler');
       if (playingAreaArr[i] === 0) {
         playingAreaArr[i] = 1;
@@ -296,7 +307,10 @@ function renderingGridArea() {
             === easyTestArrays[countLevel.level].join('')
           ) {
             // createNextLevelModal();
+            stopTimer();
             nextOrWin();
+            generateRecord();
+            getRecords();
           }
           break;
         case 'normal':
@@ -305,7 +319,10 @@ function renderingGridArea() {
             === normalTestArrays[countLevel.level].join('')
           ) {
             // createNextLevelModal(cell);
+            stopTimer();
             nextOrWin();
+            generateRecord();
+            getRecords();
           }
           break;
         case 'hard':
@@ -314,11 +331,15 @@ function renderingGridArea() {
             === hardTestArrays[countLevel.level].join('')
           ) {
             // createNextLevelModal(cell);
+            stopTimer();
             nextOrWin();
+            generateRecord();
+            getRecords();
           }
           break;
         default:
       }
+      checkTimerStatus();
     });
     gridArea.appendChild(cell);
   });
@@ -329,11 +350,13 @@ renderingGridArea();
 function createNextLevelModal() {
   const modalContainer = document.createElement('div');
   const modalButton = document.createElement('button');
+  const min = document.querySelector('.timer_container__minutes');
+  const sec = document.querySelector('.timer_container__seconds');
 
   modalContainer.className = 'modal';
   modalButton.className = 'modal__button';
 
-  modalContainer.textContent = '"Great! You solved the nonogram!"';
+  modalContainer.textContent = `"Great! You solved the nonogram in ${min.textContent}${sec.textContent}!"`;
   modalButton.textContent = 'Continue';
 
   body.appendChild(modalContainer);
@@ -349,6 +372,8 @@ function createNextLevelModal() {
     classRemove.forEach((item) => {
       // console.log(item)
       item.classList.remove('container__grid_area_cell_toggler');
+      removeTimerContent();
+      countLevel.timerStatus = false;
     });
     // console.log(playingAreaArr, 'arr');
     selectLeftArrTips();
@@ -576,3 +601,66 @@ function nextOrWin() {
     createWinModal();
   }
 }
+
+// records table
+const record = {
+  name: 'name',
+  difficulty: '',
+  time: '',
+};
+
+function recordsTable() {
+  const table = document.createElement('div');
+  table.className = 'table';
+  body.appendChild(table);
+}
+
+recordsTable();
+
+function getRecords() {
+  const table = document.querySelector('.table');
+  while (table.firstChild) {
+    table.removeChild(table.firstChild);
+  }
+  table.textContent = 'Table records';
+
+  tableArr = JSON.parse(localStorage.getItem('Records'));
+  // console.log(tableArr)
+
+  tableArr.sort((record1, record2) => Number(record1.time) - Number(record2.time));
+  // console.log(tableArr);
+
+  for (let i = 0; i < 5; i += 1) {
+    const rows = document.createElement('div');
+    rows.className = 'table__rows';
+    rows.textContent = `${tableArr[i].name} ${
+      tableArr[i].difficulty
+    } ${tableArr[i].time.slice(0, 2)}:${tableArr[i].time.slice(2)}`;
+    table.appendChild(rows);
+  }
+  // console.log(table)
+}
+
+getRecords();
+
+function generateRecord() {
+  const min = document.querySelector('.timer_container__minutes');
+  const sec = document.querySelector('.timer_container__seconds');
+  record.difficulty = select.value;
+  record.time = `${min.textContent.slice(0, -1)}${sec.textContent}`;
+  // console.log(record);
+  tableArr.push(record);
+  // console.log(tableArr);
+
+  if (tableArr.length > 5) tableArr.shift();
+  // console.log(tableArr);
+
+  // tableArr.sort((record1, record2) => Number(record1.time) - Number(record2.time));
+  // console.log(tableArr)
+  localStorage.setItem(
+    'Records',
+    JSON.stringify(tableArr),
+  );
+}
+
+// generateRecord();

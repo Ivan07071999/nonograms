@@ -95,7 +95,7 @@ body {
   background-color: orangered;
 }
 .container__grid_area_cell_left {
-  width: 160px;
+  width: 170px;
   height: 32px;
   display: flex;
   justify-content: flex-end;
@@ -111,7 +111,7 @@ body {
 .container__left_tips {
   /* border: 1px solid orangered;  */
   height: 160px;
-  width: 160px;
+  width: 165px;
   border-radius: 10px;
   display: flex;
   flex-wrap: wrap;
@@ -269,4 +269,28 @@ body {
   opacity: 1;
   transition: 1s;
   z-index: 1;
+}
+
+.table {
+  width: 200px;
+  height: 200px;
+  border: 1px solid black;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  line-height: 30px;
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+  border-radius: 5px;
+}
+
+.table__rows {
+  width: 150px;
+  height: 30px;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 5px;
 }
