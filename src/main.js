@@ -277,7 +277,7 @@ select.addEventListener('change', (event) => {
   selectLeftArrTips();
   // return selectedDifficulty;
 });
-
+let clickSound;
 function renderingGridArea() {
   while (gridArea.firstChild) {
     gridArea.removeChild(gridArea.firstChild);
@@ -295,6 +295,7 @@ function renderingGridArea() {
       cell.classList.add('container__grid_area_cell_toggler');
       // console.log(playingAreaArr);
     }
+    gridArea.appendChild(cell);
 
     cell.addEventListener('click', () => {
       cell.classList.toggle('container__grid_area_cell_toggler');
@@ -302,8 +303,10 @@ function renderingGridArea() {
       if (playingAreaArr[i] === 0) {
         playingAreaArr[i] = 1;
         // console.log(playingAreaArr);
+        clickSound = 2;
       } else {
         playingAreaArr[i] = 0;
+        clickSound = 1;
         // console.log(playingAreaArr);
       }
       switch (select.value) {
@@ -349,13 +352,15 @@ function renderingGridArea() {
         default:
       }
       checkTimerStatus();
+      leftClickAudio();
     });
-    gridArea.appendChild(cell);
+    // gridArea.appendChild(cell);
     cell.addEventListener('contextmenu', (event) => {
       event.preventDefault();
       cell.classList.toggle('container__grid_area_cell_right_click');
       cell.classList.remove('container__grid_area_cell_toggler');
       playingAreaArr[i] = 0;
+      rightClickAudio();
     });
   });
 }
@@ -503,6 +508,7 @@ function newGame() {
   const cell = document.querySelectorAll('.container__grid_area_cell');
   for (let i = 0; i < cell.length; i += 1) {
     cell[i].classList.remove('container__grid_area_cell_toggler');
+    cell[i].classList.remove('container__grid_area_cell_right_click');
   }
   playingAreaArr.fill(0);
   selectLeftArrTips();
@@ -742,6 +748,7 @@ function selectGame() {
         renderingGridArea();
         renderTipsCell(select.value);
         selectLeftArrTips();
+        // stopTimer();
       });
     }
   }
@@ -759,5 +766,23 @@ function playAudio() {
   sound.src = '/src/assets/audio/win.mp3';
   sound.currentTime = 0;
   sound.volume = 0.5;
+  sound.play();
+}
+
+function leftClickAudio() {
+  const sound = document.createElement('audio');
+  body.appendChild(sound);
+  sound.src = `/src/assets/audio/click${clickSound}.mp3`;
+  sound.currentTime = 0;
+  sound.volume = 0.3;
+  sound.play();
+}
+
+function rightClickAudio() {
+  const sound = document.createElement('audio');
+  body.appendChild(sound);
+  sound.src = '/src/assets/audio/rightClick.mp3';
+  sound.currentTime = 0;
+  sound.volume = 0.4;
   sound.play();
 }
