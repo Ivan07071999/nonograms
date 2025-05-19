@@ -8,6 +8,9 @@ import {
   easyTestArrays,
   normalTestArrays,
   hardTestArrays,
+  easyName,
+  normalName,
+  hardName,
 } from './scripts/testArrays';
 import './style.css';
 
@@ -15,6 +18,7 @@ normalTestArrays.join();
 
 const { body } = document;
 let tableArr = [];
+let nameArr = [];
 
 // Buttons
 
@@ -307,6 +311,7 @@ function renderingGridArea() {
             === easyTestArrays[countLevel.level].join('')
           ) {
             // createNextLevelModal();
+            countLevel.level += 1;
             stopTimer();
             nextOrWin();
             generateRecord();
@@ -319,6 +324,7 @@ function renderingGridArea() {
             === normalTestArrays[countLevel.level].join('')
           ) {
             // createNextLevelModal(cell);
+            countLevel.level += 1;
             stopTimer();
             nextOrWin();
             generateRecord();
@@ -331,6 +337,7 @@ function renderingGridArea() {
             === hardTestArrays[countLevel.level].join('')
           ) {
             // createNextLevelModal(cell);
+            countLevel.level += 1;
             stopTimer();
             nextOrWin();
             generateRecord();
@@ -365,7 +372,7 @@ function createNextLevelModal() {
 
   modalButton.addEventListener('click', () => {
     modalContainer.classList.remove('modal__animation');
-    countLevel.level += 1;
+    // countLevel.level += 1;
     // console.log(countLevel.level);
     playingAreaArr.fill(0);
     const classRemove = document.querySelectorAll('.container__grid_area_cell');
@@ -579,7 +586,7 @@ function createWinModal() {
   winButton.className = 'modal__button';
 
   winModal.textContent = 'You win! \n select another difficulty level';
-  winButton.textContent = 'Continue the game';
+  winButton.textContent = 'New game';
 
   body.appendChild(winModal);
   winModal.appendChild(winButton);
@@ -589,6 +596,15 @@ function createWinModal() {
   winButton.addEventListener('click', () => {
     winModal.classList.remove('modal__animation');
     countLevel.level = 0;
+    winModal.classList.remove('modal__animation');
+    playingAreaArr.fill(0);
+    const classRemove = document.querySelectorAll('.container__grid_area_cell');
+    classRemove.forEach((item) => {
+      item.classList.remove('container__grid_area_cell_toggler');
+      removeTimerContent();
+      countLevel.timerStatus = false;
+    });
+    selectLeftArrTips();
   });
 }
 
@@ -603,11 +619,6 @@ function nextOrWin() {
 }
 
 // records table
-const record = {
-  name: 'name',
-  difficulty: '',
-  time: '',
-};
 
 function recordsTable() {
   const table = document.createElement('div');
@@ -617,6 +628,35 @@ function recordsTable() {
 
 recordsTable();
 
+function loadRecords() {
+  const records = localStorage.getItem('Records');
+  if (records) {
+    tableArr = JSON.parse(records);
+  }
+}
+
+loadRecords();
+
+function generateRecord() {
+  const min = document.querySelector('.timer_container__minutes');
+  const sec = document.querySelector('.timer_container__seconds');
+  getName();
+  const record = {
+    name: nameArr[countLevel.level - 1],
+    difficulty: select.value,
+    time: `${min.textContent.slice(0, -1)}${sec.textContent}`,
+  };
+
+  tableArr.push(record);
+
+  if (tableArr.length > 5) {
+    tableArr.shift();
+  }
+
+  localStorage.setItem('Records', JSON.stringify(tableArr));
+  // console.log(tableArr);
+}
+
 function getRecords() {
   const table = document.querySelector('.table');
   while (table.firstChild) {
@@ -624,18 +664,23 @@ function getRecords() {
   }
   table.textContent = 'Table records';
 
-  tableArr = JSON.parse(localStorage.getItem('Records'));
-  // console.log(tableArr)
+  const recordsArr = JSON.parse(localStorage.getItem('Records'));
+  // if (tableArr.length > 5) tableArr.shift();
 
-  tableArr.sort((record1, record2) => Number(record1.time) - Number(record2.time));
   // console.log(tableArr);
+
+  recordsArr.sort((record1, record2) => Number(record1.time) - Number(record2.time));
+  // console.log(recordsArr, '222');
 
   for (let i = 0; i < 5; i += 1) {
     const rows = document.createElement('div');
     rows.className = 'table__rows';
-    rows.textContent = `${tableArr[i].name} ${
-      tableArr[i].difficulty
-    } ${tableArr[i].time.slice(0, 2)}:${tableArr[i].time.slice(2)}`;
+    rows.textContent = `
+    ${recordsArr[i].name || 'name'} 
+    ${recordsArr[i].difficulty || 'difficulty'} 
+    ${recordsArr[i].time.slice(0, 2) || '00'}:
+    ${recordsArr[i].time.slice(2) || '00'}
+    `;
     table.appendChild(rows);
   }
   // console.log(table)
@@ -643,24 +688,12 @@ function getRecords() {
 
 getRecords();
 
-function generateRecord() {
-  const min = document.querySelector('.timer_container__minutes');
-  const sec = document.querySelector('.timer_container__seconds');
-  record.difficulty = select.value;
-  record.time = `${min.textContent.slice(0, -1)}${sec.textContent}`;
-  // console.log(record);
-  tableArr.push(record);
-  // console.log(tableArr);
-
-  if (tableArr.length > 5) tableArr.shift();
-  // console.log(tableArr);
-
-  // tableArr.sort((record1, record2) => Number(record1.time) - Number(record2.time));
-  // console.log(tableArr)
-  localStorage.setItem(
-    'Records',
-    JSON.stringify(tableArr),
-  );
+function getName() {
+  if (select.value === 'easy') {
+    nameArr = easyName;
+  } else if (select.value === 'normal') {
+    nameArr = normalName;
+  } else {
+    nameArr = hardName;
+  }
 }
-
-// generateRecord();
