@@ -11,6 +11,7 @@ import {
   easyName,
   normalName,
   hardName,
+  allNames,
 } from './scripts/testArrays';
 import './style.css';
 
@@ -297,6 +298,7 @@ function renderingGridArea() {
 
     cell.addEventListener('click', () => {
       cell.classList.toggle('container__grid_area_cell_toggler');
+      cell.classList.remove('container__grid_area_cell_right_click');
       if (playingAreaArr[i] === 0) {
         playingAreaArr[i] = 1;
         // console.log(playingAreaArr);
@@ -349,6 +351,12 @@ function renderingGridArea() {
       checkTimerStatus();
     });
     gridArea.appendChild(cell);
+    cell.addEventListener('contextmenu', (event) => {
+      event.preventDefault();
+      cell.classList.toggle('container__grid_area_cell_right_click');
+      cell.classList.remove('container__grid_area_cell_toggler');
+      playingAreaArr[i] = 0;
+    });
   });
 }
 
@@ -379,6 +387,7 @@ function createNextLevelModal() {
     classRemove.forEach((item) => {
       // console.log(item)
       item.classList.remove('container__grid_area_cell_toggler');
+      item.classList.remove('container__grid_area_cell_right_click');
       removeTimerContent();
       countLevel.timerStatus = false;
     });
@@ -504,33 +513,39 @@ function showSolution() {
   switch (select.value) {
     case 'easy':
       for (let i = 0; i < easyTestArrays[countLevel.level].length; i += 1) {
+        cell[i].classList.remove('container__grid_area_cell_right_click');
         if (easyTestArrays[countLevel.level][i] === 1) {
           cell[i].classList.add('container__grid_area_cell_toggler');
         } else {
           cell[i].classList.remove('container__grid_area_cell_toggler');
         }
       }
-      createNextLevelModal();
+      countLevel.level += 1;
+      nextOrWin();
       break;
     case 'normal':
       for (let i = 0; i < normalTestArrays[countLevel.level].length; i += 1) {
+        cell[i].classList.remove('container__grid_area_cell_right_click');
         if (normalTestArrays[countLevel.level][i] === 1) {
           cell[i].classList.add('container__grid_area_cell_toggler');
         } else {
           cell[i].classList.remove('container__grid_area_cell_toggler');
         }
       }
-      createNextLevelModal();
+      countLevel.level += 1;
+      nextOrWin();
       break;
     case 'hard':
       for (let i = 0; i < hardTestArrays[countLevel.level].length; i += 1) {
+        cell[i].classList.remove('container__grid_area_cell_right_click');
         if (hardTestArrays[countLevel.level][i] === 1) {
           cell[i].classList.add('container__grid_area_cell_toggler');
         } else {
           cell[i].classList.remove('container__grid_area_cell_toggler');
         }
       }
-      createNextLevelModal();
+      countLevel.level += 1;
+      nextOrWin();
       break;
     default:
   }
@@ -610,7 +625,7 @@ function createWinModal() {
 
 // createWinModal();
 function nextOrWin() {
-  // countLevel.level += 1;
+  playAudio();
   if ((countLevel.level <= 4)) {
     createNextLevelModal();
   } else {
@@ -696,4 +711,53 @@ function getName() {
   } else {
     nameArr = hardName;
   }
+}
+
+// Select game
+
+function selectGame() {
+  const containerSel = document.createElement('div');
+  containerSel.className = 'select_game__container';
+
+  body.appendChild(containerSel);
+  getName();
+
+  for (let i = 0; i < allNames.length; i += 1) {
+    const subContainer = document.createElement('div');
+    subContainer.className = 'select_game__container_sub';
+    containerSel.appendChild(subContainer);
+    subContainer.textContent = `${difficultyLevelsArray[i]}:`;
+
+    for (let j = 0; j < allNames[i].length; j += 1) {
+      const names = document.createElement('span');
+      names.className = 'select_game__container_sub_name';
+      subContainer.appendChild(names);
+      names.textContent = `${allNames[i][j]}`;
+
+      names.addEventListener('click', () => {
+        select.value = difficultyLevelsArray[i].toLowerCase();
+        countLevel.level = j;
+
+        createArr();
+        renderingGridArea();
+        renderTipsCell(select.value);
+        selectLeftArrTips();
+      });
+    }
+  }
+}
+
+selectGame();
+
+function createArr() {
+  playingAreaArr = Array(createLengthArray[select.value] ** 2).fill(0);
+}
+
+function playAudio() {
+  const sound = document.createElement('audio');
+  body.appendChild(sound);
+  sound.src = '/src/assets/audio/win.mp3';
+  sound.currentTime = 0;
+  sound.volume = 0.5;
+  sound.play();
 }
