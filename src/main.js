@@ -23,6 +23,8 @@ let nameArr = [];
 
 // Buttons
 
+const gameContainer = document.createElement('div');
+
 const statusContainer = document.createElement('div');
 const newGameButton = document.createElement('button');
 const solutionButton = document.createElement('button');
@@ -31,6 +33,7 @@ const saveGameButton = document.createElement('button');
 const continueGameButton = document.createElement('button');
 
 function addClassList() {
+  gameContainer.className = 'game__container';
   statusContainer.className = 'status_container';
   newGameButton.className = 'status_container__new_game_button';
   solutionButton.className = 'status_container__solution_button';
@@ -52,7 +55,8 @@ function addTextButtons() {
 addTextButtons();
 
 function appendButtons() {
-  body.appendChild(statusContainer);
+  body.appendChild(gameContainer);
+  gameContainer.appendChild(statusContainer);
   statusContainer.appendChild(newGameButton);
   statusContainer.appendChild(solutionButton);
   statusContainer.appendChild(randomGameButton);
@@ -69,7 +73,7 @@ const minutes = document.createElement('div');
 const seconds = document.createElement('div');
 
 function appendTimerItems() {
-  body.appendChild(timerContainer);
+  gameContainer.appendChild(timerContainer);
   timerContainer.appendChild(minutes);
   timerContainer.appendChild(seconds);
 }
@@ -136,9 +140,6 @@ function removeTimerContent() {
   sec.textContent = '00';
 }
 
-// checkTimerStatus();
-// startTimer();
-
 // grid area
 
 const container = document.createElement('div');
@@ -148,7 +149,7 @@ const leftTips = document.createElement('div');
 const gridArea = document.createElement('div');
 
 function appendGridAreaItems() {
-  body.appendChild(container);
+  gameContainer.appendChild(container);
   container.appendChild(imageArea);
   container.appendChild(topTips);
   container.appendChild(leftTips);
@@ -182,7 +183,7 @@ for (let i = 0; i < levelOfDifficulty.easy; i += 1) {
 // night mode
 const nightButton = document.createElement('div');
 nightButton.className = 'night_mode light_mode';
-body.appendChild(nightButton);
+gameContainer.appendChild(nightButton);
 let styleMode = localStorage.getItem('styleMode');
 
 function enableDarkStyle() {
@@ -216,7 +217,7 @@ const difficultyLevelsArray = ['Easy', 'Normal', 'Hard'];
 
 const select = document.createElement('select');
 select.className = 'game__select';
-body.appendChild(select);
+statusContainer.appendChild(select);
 
 difficultyLevelsArray.forEach((optionText) => {
   const optionElement = document.createElement('option');
@@ -379,7 +380,7 @@ function createNextLevelModal() {
   modalContainer.textContent = `"Great! You solved the nonogram in ${min.textContent}${sec.textContent}!"`;
   modalButton.textContent = 'Continue';
 
-  body.appendChild(modalContainer);
+  gameContainer.appendChild(modalContainer);
   modalContainer.appendChild(modalButton);
   modalContainer.classList.add('modal__animation');
 
@@ -609,7 +610,7 @@ function createWinModal() {
   winModal.textContent = 'You win! \n select another difficulty level';
   winButton.textContent = 'New game';
 
-  body.appendChild(winModal);
+  gameContainer.appendChild(winModal);
   winModal.appendChild(winButton);
 
   winModal.classList.add('modal__animation');
@@ -644,7 +645,7 @@ function nextOrWin() {
 function recordsTable() {
   const table = document.createElement('div');
   table.className = 'table';
-  body.appendChild(table);
+  gameContainer.appendChild(table);
 }
 
 recordsTable();
@@ -725,7 +726,8 @@ function selectGame() {
   const containerSel = document.createElement('div');
   containerSel.className = 'select_game__container';
 
-  body.appendChild(containerSel);
+  gameContainer.appendChild(containerSel);
+  containerSel.textContent = 'Select nonogram';
   getName();
 
   for (let i = 0; i < allNames.length; i += 1) {
