@@ -70,7 +70,8 @@ select.addEventListener('change', (event) => {
   renderTipsCell(selectedDifficulty);
   selectLeftArrTips();
 });
-
+playingAreaArr.length = createLengthArray[select.value] ** 2;
+playingAreaArr.fill(0);
 renderingGridArea();
 selectLeftArrTips();
 
@@ -83,14 +84,3 @@ continueGameButton.addEventListener('click', loadPreviousGame);
 loadRecords();
 getRecords();
 selectGame();
-
-// function loadPreviousGame() {
-//   const getSaveItems = JSON.parse(localStorage.getItem('Previous game'));
-//   select.value = getSaveItems.difficulty;
-//   countLevel.level = getSaveItems.level;
-//   playingAreaArr = getSaveItems.arr.split('').map(Number);
-
-//   renderingGridArea();
-//   renderTipsCell(select.value);
-//   selectLeftArrTips();
-// }

@@ -97,10 +97,6 @@ export const hardTestArrays = [
   ],
 ];
 
-export const easyName = ['Snake', 'Cross', 'Flag', 'Sharp', 'Shuriken'];
-export const normalName = ['Cup', 'norm2', 'norm3', 'norm4', 'norm5'];
-export const hardName = ['hard3', 'hard3', 'hard3', 'hard5', 'hard5'];
-
 export const allNames = [
   ['Snake', 'Cross', 'Flag', 'Sharp', 'Shuriken'],
   ['Cup', 'House', 'Duck', 'Cat', 'Squirrel'],

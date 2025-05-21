@@ -4,39 +4,87 @@ import {
   normalTestArrays,
   hardTestArrays,
   countLevel,
-  createLengthArray,
   playingAreaArr,
 } from './testArrays';
 import {
   checkTimerStatus,
-  stopTimer,
 } from './timer';
 
 import { nextOrWin } from './modal';
 import { generateRecord, getRecords } from './records';
 import { leftClickAudio, rightClickAudio } from './audio';
 
-export function renderingGridArea() {
+function comparison() {
   const select = document.querySelector('.game__select');
-  playingAreaArr.length = createLengthArray[select.value] ** 2;
-  playingAreaArr.fill(0);
+  switch (select.value) {
+    case 'easy':
+      if (
+        playingAreaArr.join('') === easyTestArrays[countLevel.level].join('')
+      ) {
+        countLevel.level += 1;
+        nextOrWin();
+        generateRecord();
+        getRecords();
+      }
+      break;
+    case 'normal':
+      if (
+        playingAreaArr.join('') === normalTestArrays[countLevel.level].join('')
+      ) {
+        countLevel.level += 1;
+        nextOrWin();
+        generateRecord();
+        getRecords();
+      }
+      break;
+    case 'hard':
+      if (
+        playingAreaArr.join('') === hardTestArrays[countLevel.level].join('')
+      ) {
+        countLevel.level += 1;
+        nextOrWin();
+        generateRecord();
+        getRecords();
+      }
+      break;
+    default:
+  }
+}
+
+export function renderingGridArea() {
   const gridArea = document.querySelector('.container__grid_area');
 
   while (gridArea.firstChild) {
     gridArea.removeChild(gridArea.firstChild);
   }
-  // console.log(playingAreaArr);
 
   playingAreaArr.forEach((_, i) => {
     const cell = document.createElement('div');
     cell.className = 'container__grid_area_cell';
     if (playingAreaArr[i] === 0) {
-      // cell.classList.remove('container__grid_area_cell_toggler');
-      // console.log(playingAreaArr);
+      cell.classList.remove('container__grid_area_cell_toggler');
     } else {
       cell.classList.add('container__grid_area_cell_toggler');
-      // console.log(playingAreaArr);
     }
+    if (i % 5 === 0) {
+      cell.style.borderLeft = '1.7px solid orangered';
+    }
+
+    if (playingAreaArr.length === 100) {
+      if (i - 40 - (i % 10) === 0) {
+        cell.style.borderBottom = '1.7px solid orangered';
+      }
+    }
+
+    if (playingAreaArr.length % 3 === 0) {
+      if (((i - 150) - (i % 15)) === 0) {
+        cell.style.borderTop = '1.7px solid orangered';
+      }
+      if (i - 75 - (i % 15) === 0) {
+        cell.style.borderTop = '1.7px solid orangered';
+      }
+    }
+
     gridArea.appendChild(cell);
 
     cell.addEventListener('click', () => {
@@ -44,52 +92,12 @@ export function renderingGridArea() {
       cell.classList.remove('container__grid_area_cell_right_click');
       if (playingAreaArr[i] === 0) {
         playingAreaArr[i] = 1;
-        // console.log(playingAreaArr);
         countLevel.clickSound = 2;
       } else {
         playingAreaArr[i] = 0;
         countLevel.clickSound = 1;
-        // console.log(playingAreaArr);
       }
-      switch (select.value) {
-        case 'easy':
-          if (
-            playingAreaArr.join('')
-            === easyTestArrays[countLevel.level].join('')
-          ) {
-            countLevel.level += 1;
-            stopTimer();
-            nextOrWin();
-            generateRecord();
-            getRecords();
-          }
-          break;
-        case 'normal':
-          if (
-            playingAreaArr.join('')
-            === normalTestArrays[countLevel.level].join('')
-          ) {
-            countLevel.level += 1;
-            stopTimer();
-            nextOrWin();
-            generateRecord();
-            getRecords();
-          }
-          break;
-        case 'hard':
-          if (
-            playingAreaArr.join('')
-            === hardTestArrays[countLevel.level].join('')
-          ) {
-            countLevel.level += 1;
-            stopTimer();
-            nextOrWin();
-            generateRecord();
-            getRecords();
-          }
-          break;
-        default:
-      }
+      comparison();
       checkTimerStatus();
       leftClickAudio();
     });

@@ -9,6 +9,7 @@ import {
   playingAreaArr,
 } from './testArrays';
 import { nextOrWin } from './modal';
+import { removeTimerContent, stopTimer } from './timer';
 
 export function newGame() {
   const cell = document.querySelectorAll('.container__grid_area_cell');
@@ -18,6 +19,9 @@ export function newGame() {
   }
   playingAreaArr.fill(0);
   selectLeftArrTips();
+  removeTimerContent();
+  stopTimer();
+  countLevel.timerStatus = false;
 }
 
 export function showSolution() {
@@ -88,6 +92,9 @@ export function createRandomGame() {
   renderingGridArea();
   renderTipsCell(select.value);
   selectLeftArrTips();
+  stopTimer();
+  removeTimerContent();
+  countLevel.timerStatus = false;
 }
 
 export function loadPreviousGame() {
@@ -95,21 +102,17 @@ export function loadPreviousGame() {
   const getSaveItems = JSON.parse(localStorage.getItem('Previous game'));
   select.value = getSaveItems.difficulty;
   countLevel.level = getSaveItems.level;
-  // playingAreaArr.length = 0;
+  playingAreaArr.length = 0;
+  const buffer = getSaveItems.arr.split('').map(Number);
 
-  // playingAreaArr = getSaveItems.arr.split('').map(Number);
-  //   for (let i = 0; i < buffer.length; i += 1) {
-  //     playingAreaArr.push(buffer[i]);
-  //   }
-  // const buffer = getSaveItems.arr.split("").map(Number);
-  // playingAreaArr = buffer;
-  //   getSaveItems.arr.split('');
-  //   console.log(getSaveItems)
-  //   console.log(playingAreaArr.arr)
-  // playingAreaArr = getSaveItems.arr.split('').map(Number);
-  // playingAreaArr = getSaveItems.arr.split('').map(Number);
+  for (let i = 0; i < buffer.length; i += 1) {
+    playingAreaArr.push(buffer[i]);
+  }
 
   renderingGridArea();
   renderTipsCell(select.value);
   selectLeftArrTips();
+  stopTimer();
+  removeTimerContent();
+  countLevel.timerStatus = false;
 }

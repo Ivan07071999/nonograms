@@ -12,6 +12,8 @@ import {
   selectLeftArrTips,
 } from './playingField';
 
+import { stopTimer, removeTimerContent } from './timer';
+
 export default function selectGame() {
   const gameContainer = document.querySelector('.game__container');
   const select = document.querySelector('.game__select');
@@ -20,7 +22,6 @@ export default function selectGame() {
 
   gameContainer.appendChild(containerSel);
   containerSel.textContent = 'Select nonogram';
-  // getName();
 
   for (let i = 0; i < allNames.length; i += 1) {
     const subContainer = document.createElement('div');
@@ -44,7 +45,9 @@ export default function selectGame() {
         renderingGridArea();
         renderTipsCell(select.value);
         selectLeftArrTips();
-        // stopTimer();
+        stopTimer();
+        removeTimerContent();
+        countLevel.timerStatus = false;
       });
     }
   }

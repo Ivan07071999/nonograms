@@ -1,10 +1,20 @@
 /* eslint-disable import/no-cycle */
 
-import { removeTimerContent } from './timer';
+import { removeTimerContent, stopTimer } from './timer';
 import { selectLeftArrTips } from './playingField';
 import { playAudio } from './audio';
 
 import { countLevel, createLengthArray, playingAreaArr } from './testArrays';
+
+function unlockElements() {
+  const buttonsElements = document.querySelector('.status_container');
+  const selectElements = document.querySelector('.select_game__container');
+  const gridArea = document.querySelector('.container__grid_area');
+
+  buttonsElements.classList.remove('status_container_disable');
+  selectElements.classList.remove('select_game__container_disable');
+  gridArea.classList.remove('container__grid_area_disable');
+}
 
 export function createNextLevelModal() {
   const select = document.querySelector('.game__select');
@@ -28,18 +38,15 @@ export function createNextLevelModal() {
 
   modalButton.addEventListener('click', () => {
     modalContainer.classList.remove('modal__animation');
-    //  countLevel.level += 1;
-    // console.log(countLevel.level);
     playingAreaArr.fill(0);
     const classRemove = document.querySelectorAll('.container__grid_area_cell');
     classRemove.forEach((item) => {
-      // console.log(item)
       item.classList.remove('container__grid_area_cell_toggler');
       item.classList.remove('container__grid_area_cell_right_click');
       removeTimerContent();
       countLevel.timerStatus = false;
     });
-    // console.log(playingAreaArr, 'arr');
+    unlockElements();
     selectLeftArrTips();
   });
 }
@@ -75,12 +82,25 @@ export function createWinModal() {
       removeTimerContent();
       countLevel.timerStatus = false;
     });
+    unlockElements();
     selectLeftArrTips();
   });
 }
 
+function disableElements() {
+  const buttonsElements = document.querySelector('.status_container');
+  const selectElements = document.querySelector('.select_game__container');
+  const gridArea = document.querySelector('.container__grid_area');
+
+  buttonsElements.classList.add('status_container_disable');
+  selectElements.classList.add('select_game__container_disable');
+  gridArea.classList.add('container__grid_area_disable');
+}
+
 export function nextOrWin() {
   playAudio();
+  disableElements();
+  stopTimer();
   if ((countLevel.level <= 4)) {
     createNextLevelModal();
   } else {

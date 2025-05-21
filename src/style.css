@@ -19,7 +19,7 @@ body {
 
 .game__container {
   width: 1280px;
-  height: 850px;
+  /* height: 850px; */
   margin: auto;
   position: relative;
 }
@@ -42,6 +42,7 @@ body {
   width: 485px;
   height: 485px;
 }
+
 .container__hard {
   width: 650px;
   height: 650px;
@@ -62,7 +63,6 @@ body {
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
-
 }
 
 .container__top_tips_normal {
@@ -112,7 +112,6 @@ body {
 	font-size: 20px;
 	font-weight: 600;
 	text-decoration: none;
-  
 }
 
 .container__left_tips {
@@ -131,7 +130,13 @@ body {
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
+  outline: 1px solid orangered;
 }
+
+.container__grid_area_disable {
+  pointer-events: none;
+}
+
 .container__grid_area_normal {
   width: 320px;
   height: 320px;
@@ -171,6 +176,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-around;
+}
+
+.status_container_disable {
+  pointer-events: none;
+  opacity: 0.8;
 }
 
 .status_container__continue_button,
@@ -223,6 +233,7 @@ body {
   background-size: contain;
   cursor: pointer;
 }
+
 .night_mode:hover {
   transform: translateY(-1px);
   transition: all ease-in-out .2s;
@@ -256,7 +267,7 @@ body {
   10px 10px 10px 5px rgb(0 0 0 / 8%);
   padding: 20px;
   position: absolute;
-  top: 50%;
+  top: 400px;
   left: 1.5%;
   background-color: var(--color-body);
   border-radius: 10px;
@@ -332,6 +343,11 @@ body {
   justify-content: center;
 }
 
+.select_game__container_disable {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
 .select_game__container_sub {
   width: 200px;
   height: 200px;
@@ -349,6 +365,7 @@ body {
   margin: auto;
   font-size: 18px;
   background-color: var(--color-bg);
+  
 }
 
 .select_game__container_sub_name:hover {
@@ -374,4 +391,48 @@ body {
   border-radius: 10px;
   font-size: 14px;
   letter-spacing: 1px;
+}
+
+@media screen and (max-width: 768px) {
+  .game__container {
+    width: 768px;
+  }
+  .select_game__container {
+    top: 105%;
+    left: 450px;
+    height: 160px;
+  }
+
+  .table {
+    top: 105%;
+    left: 60px;
+  }
+  
+  .status_container {
+    width: 758px;
+  }
+
+  .timer_container {
+    margin: auto;
+  }
+
+  .night_mode {
+    width: 50px;
+    height: 50px;
+    left: 30px;
+    top: 85px;
+    z-index: 2;
+  }
+
+  .status_container__continue_button,
+  .status_container__save_button,
+  .status_container__random_button,
+  .status_container__solution_button,
+  .status_container__new_game_button,
+  .modal__button {
+    font-size: 15px;
+    padding: 5px 10px 5px 10px;
+    line-height: 10px;
+    margin: 0;
+  }
 }

@@ -1,5 +1,5 @@
 import {
-  normalName, easyName, hardName, countLevel,
+  countLevel, allNames,
 } from './testArrays';
 
 let nameArr = [];
@@ -8,11 +8,11 @@ let tableArr = [];
 export function getName() {
   const select = document.querySelector('.game__select');
   if (select.value === 'easy') {
-    nameArr = easyName;
+    nameArr = [...allNames[0]];
   } else if (select.value === 'normal') {
-    nameArr = normalName;
+    nameArr = [...allNames[1]];
   } else {
-    nameArr = hardName;
+    nameArr = [...allNames[2]];
   }
 }
 
