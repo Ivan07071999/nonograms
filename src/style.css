@@ -20,7 +20,6 @@ body {
 .game__container {
   width: 1280px;
   height: 850px;
-  /* border: 1px solid black; */
   margin: auto;
   position: relative;
 }
@@ -117,7 +116,6 @@ body {
 }
 
 .container__left_tips {
-  /* border: 1px solid orangered;  */
   height: 160px;
   width: 165px;
   border-radius: 10px;

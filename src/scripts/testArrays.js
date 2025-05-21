@@ -106,3 +106,24 @@ export const allNames = [
   ['Cup', 'House', 'Duck', 'Cat', 'Squirrel'],
   ['Rabbit', 'Dinosaur', 'Penguin', 'Lion', 'Lizard'],
 ];
+
+export const createLengthArray = {
+  easy: 5,
+  normal: 10,
+  hard: 15,
+};
+
+export const countLevel = {
+  level: 0,
+  timerStatus: false,
+  clickSound: 1,
+};
+
+export const levelOfDifficulty = {
+  easy: 5 ** 2,
+  normal: 10 ** 2,
+  hard: 15 ** 2,
+};
+
+export const playingAreaArr = [];
+export const difficultyLevelsArray = ['Easy', 'Normal', 'Hard'];
