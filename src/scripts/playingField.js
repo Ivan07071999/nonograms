@@ -5,6 +5,7 @@ import {
   hardTestArrays,
   countLevel,
   playingAreaArr,
+  createLengthArray,
 } from './testArrays';
 import {
   checkTimerStatus,
@@ -18,37 +19,26 @@ function comparison() {
   const select = document.querySelector('.game__select');
   switch (select.value) {
     case 'easy':
-      if (
-        playingAreaArr.join('') === easyTestArrays[countLevel.level].join('')
-      ) {
-        countLevel.level += 1;
-        nextOrWin();
-        generateRecord();
-        getRecords();
+      for (let i = 0; i < easyTestArrays[countLevel.level].length; i += 1) {
+        if (playingAreaArr[i] !== easyTestArrays[countLevel.level][i]) return;
       }
       break;
     case 'normal':
-      if (
-        playingAreaArr.join('') === normalTestArrays[countLevel.level].join('')
-      ) {
-        countLevel.level += 1;
-        nextOrWin();
-        generateRecord();
-        getRecords();
+      for (let i = 0; i < normalTestArrays[countLevel.level].length; i += 1) {
+        if (playingAreaArr[i] !== normalTestArrays[countLevel.level][i]) return;
       }
       break;
     case 'hard':
-      if (
-        playingAreaArr.join('') === hardTestArrays[countLevel.level].join('')
-      ) {
-        countLevel.level += 1;
-        nextOrWin();
-        generateRecord();
-        getRecords();
+      for (let i = 0; i < hardTestArrays[countLevel.level].length; i += 1) {
+        if (playingAreaArr[i] !== hardTestArrays[countLevel.level][i]) return;
       }
       break;
     default:
   }
+  countLevel.level += 1;
+  nextOrWin();
+  generateRecord();
+  getRecords();
 }
 
 export function renderingGridArea() {
@@ -234,16 +224,16 @@ export function selectLeftArrTips() {
   const select = document.querySelector('.game__select');
   switch (select.value) {
     case 'easy':
-      createLeftTips(easyTestArrays[countLevel.level], 5);
-      createTopTips(easyTestArrays[countLevel.level], 5);
+      createLeftTips(easyTestArrays[countLevel.level], createLengthArray.easy);
+      createTopTips(easyTestArrays[countLevel.level], createLengthArray.easy);
       break;
     case 'normal':
-      createLeftTips(normalTestArrays[countLevel.level], 10);
-      createTopTips(normalTestArrays[countLevel.level], 10);
+      createLeftTips(normalTestArrays[countLevel.level], createLengthArray.normal);
+      createTopTips(normalTestArrays[countLevel.level], createLengthArray.normal);
       break;
     case 'hard':
-      createLeftTips(hardTestArrays[countLevel.level], 15);
-      createTopTips(hardTestArrays[countLevel.level], 15);
+      createLeftTips(hardTestArrays[countLevel.level], createLengthArray.hard);
+      createTopTips(hardTestArrays[countLevel.level], createLengthArray.hard);
       break;
     default:
   }

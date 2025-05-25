@@ -116,9 +116,9 @@ export const countLevel = {
 };
 
 export const levelOfDifficulty = {
-  easy: 5 ** 2,
-  normal: 10 ** 2,
-  hard: 15 ** 2,
+  easy: 25,
+  normal: 100,
+  hard: 225,
 };
 
 export const playingAreaArr = [];

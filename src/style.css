@@ -19,7 +19,6 @@ body {
 
 .game__container {
   width: 1280px;
-  /* height: 850px; */
   margin: auto;
   position: relative;
 }
@@ -74,7 +73,6 @@ body {
   width: 482px;
   height: 160px;
 }
-
 
 .container__grid_area_cell_top {
   width: 32px;
