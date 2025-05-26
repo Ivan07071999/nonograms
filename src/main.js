@@ -22,6 +22,7 @@ import {
 import { loadRecords, getRecords } from './scripts/records';
 import selectGame from './scripts/selectGame';
 import './style.css';
+import { clickSound, soundWin } from './scripts/audio';
 
 let styleMode = localStorage.getItem('styleMode');
 
@@ -84,3 +85,5 @@ continueGameButton.addEventListener('click', loadPreviousGame);
 loadRecords();
 selectGame();
 getRecords();
+soundWin();
+clickSound();
