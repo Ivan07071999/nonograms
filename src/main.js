@@ -82,5 +82,5 @@ saveGameButton.addEventListener('click', saveGame);
 continueGameButton.addEventListener('click', loadPreviousGame);
 
 loadRecords();
-getRecords();
 selectGame();
+getRecords();
